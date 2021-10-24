@@ -15,12 +15,23 @@ import java.util.*;
  * Husky Pack API via Azure Functions with HTTP Trigger.
  */
 public class Function {
-
+    /**
+     * User system stores users.
+     */
     public static Set<User> users = new HashSet<>();
+    /**
+     * Counts number of users in user system.
+     */
     public static int userCount;
 
+     /**
+     * Tasks system stores tasks.
+     */
     public static Set<Task> tasks = new HashSet<>();
-    public static int codeCount;
+    /**
+     * Counts number of tasks in user system.
+     */
+    public static int taskCount;
 
     /**
      * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
@@ -48,6 +59,20 @@ public class Function {
         }
     }
 
+    /**
+     * Provides functions to manage integrated user system.
+     * Functions:
+     *  - Add
+     *  - Remove
+     *  - Authenticate
+     *  - Info
+     *  - List
+     *  - Clean
+     * @return HTTP request status and associated results for given function.
+     * 
+     * URL Format: https://huskypackapi.azurewebsites.net/api/user?function={function}
+     * Takes function name and associated query parameters.
+     */
     @FunctionName("user")
     public HttpResponseMessage user(
             @HttpTrigger(
@@ -62,9 +87,10 @@ public class Function {
 
         /**
          * Adds user to user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserAdd?first-name=Husky&last-name=Junior&email=h@uw.edu&password=superhusky
+         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=add&first-name={first}&last-name={last}&email={correctEmail}&password={password}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=add&first-name=Husky&last-name=Junior&email=hj@uw.edu&password=superhusky
          */
         if (function.equals("add")) {
             final String firstName = request.getQueryParameters().get("first-name");
@@ -85,9 +111,10 @@ public class Function {
 
         /**
          * Removes user from user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserRemove?id=0
+         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=remove&id={userID}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=remove&id=0
          */
         } else if (function.equals("remove")) {
             final String id = request.getQueryParameters().get("id");
@@ -102,9 +129,10 @@ public class Function {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User failed to be removed").build();
         /**
          * Authenticates user in user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserAuthenticate?email=h@uw.edu&password=superhusky
+         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=authenticate&email={email}&password={password}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=authenticate&email=hj@uw.edu&password=superhusky
          */
         } else if (function.equals("authenticate")) {
             final String email = request.getQueryParameters().get("email");
@@ -112,7 +140,7 @@ public class Function {
 
             for (User user : users) {
                 if (user.email.equals(email) && user.password.equals(password)) {
-                    return request.createResponseBuilder(HttpStatus.OK).body("User successfully authentically | user:\n" + user.toString()).build();
+                    return request.createResponseBuilder(HttpStatus.OK).body("Correct credentials").build();
                 }
             }
 
@@ -120,9 +148,10 @@ public class Function {
 
         /**
          * Gives user information in user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserInfo?id=0
+         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=info&id={userID}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=info&id=0
          */
         } else if (function.equals("info")) {
             final String id = request.getQueryParameters().get("id");
@@ -158,9 +187,10 @@ public class Function {
 
         /**
          * Lists users in user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserList
+         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=list
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=list
          */
         } else if (function.equals("list")) {
             String lst = "";
@@ -174,9 +204,10 @@ public class Function {
         
         /**
          * Removes all users in user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserList
+         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=clean
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=clean
          */
         } else if (function.equals("clean")) {
             users.removeAll(users);
@@ -190,6 +221,21 @@ public class Function {
         }
     }
 
+
+    /**
+     * Provides functions to manage integrated user system.
+     * Functions:
+     *  - Add
+     *  - Remove
+     *  - Info
+     *  - Status
+     *  - List
+     *  - Clean
+     * @return HTTP request status and associated results for given function.
+     * 
+     * URL Format: https://huskypackapi.azurewebsites.net/api/user?function={function}
+     * Takes function name and associated query parameters.
+     */
     @FunctionName("task")
     public HttpResponseMessage task(
             @HttpTrigger(
@@ -206,7 +252,7 @@ public class Function {
          * Add task to task system.
          * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=add&title=Food&description=Bear_wants_food
          */
         if (function.equals("add")) {
             final String id = request.getQueryParameters().get("id");
@@ -215,9 +261,9 @@ public class Function {
             
             for (User user : users) {
                 if (Integer.toString(user.id).equals(id)) {
-                    Task task = new Task(codeCount, user, title, description);
+                    Task task = new Task(taskCount, user, title, description);
                     tasks.add(task);
-                    codeCount += 1;
+                    taskCount += 1;
                     return request.createResponseBuilder(HttpStatus.OK).body("Task successfully added: \n" + task.toString()).build();
                 }
             }
