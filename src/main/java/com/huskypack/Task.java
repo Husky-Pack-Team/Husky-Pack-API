@@ -18,7 +18,7 @@ public class Task {
     public String toString() {
         String task = "{\n"
             + "   code: " + code + "\n"
-            + "   User: " + user + "\n"
+            + "   User: " + user.id + "\n"
             + "   title: " + title + "\n"
             + "   description: " + description + "\n"
             + "   status: " + status + "\n"
