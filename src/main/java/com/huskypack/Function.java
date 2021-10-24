@@ -127,7 +127,7 @@ public class Function {
             }
 
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User failed to be removed").build();
-            
+
         /**
          * Authenticates user in user system.
          * 
@@ -279,10 +279,11 @@ public class Function {
             final String id = request.getQueryParameters().get("id");
             final String title = request.getQueryParameters().get("title");
             final String description = request.getQueryParameters().get("description");
+            final String cost = request.getQueryParameters().get("cost");
             
             for (User user : users) {
                 if (Integer.toString(user.id).equals(id)) {
-                    Task task = new Task(taskCount, user, title, description);
+                    Task task = new Task(taskCount, user, title, description, Integer.parseInt(cost));
                     tasks.add(task);
                     taskCount += 1;
                     return request.createResponseBuilder(HttpStatus.OK).body("Task successfully added: \n" + task.toString()).build();
