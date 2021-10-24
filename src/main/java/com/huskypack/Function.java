@@ -24,7 +24,7 @@ public class Function {
      */
     public static int userCount;
 
-     /**
+    /**
      * Tasks system stores tasks.
      */
     public static Set<Task> tasks = new HashSet<>();
@@ -32,6 +32,16 @@ public class Function {
      * Counts number of tasks in user system.
      */
     public static int taskCount;
+
+    /**
+     * Community stores posts from users.
+     */
+    public static Set<Post> community = new HashSet<>();
+    /**
+     * Counts number of posts in community feed.
+     */
+    public static int postCount;
+
 
     /**
      * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
@@ -307,6 +317,7 @@ public class Function {
                     return request.createResponseBuilder(HttpStatus.OK).body("Task successfully removed | code: " + code).build();
                 }
             }
+
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Task failed to be removed").build();
 
         /**
@@ -385,21 +396,77 @@ public class Function {
     /**
      * Provides functions to manage integrated user system.
      */
-    // @FunctionName("community")
-    // public HttpResponseMessage community(
-    //         @HttpTrigger(
-    //             name = "req",
-    //             methods = {HttpMethod.GET, HttpMethod.POST},
-    //             authLevel = AuthorizationLevel.ANONYMOUS)
-    //             HttpRequestMessage<Optional<String>> request,
-    //         final ExecutionContext context) {
-    //     context.getLogger().info("Java HTTP processed community function request.");
-    // }
+    @FunctionName("community")
+    public HttpResponseMessage community(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.GET, HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext context) {
+        context.getLogger().info("Java HTTP processed community function request.");
 
-    // @FunctionName("Community")
-        // @FunctionName("CommunityPostAdd")
-        // @FunctionName("CommunityPostRemove")
-        // @FunctionName("CommunityPostList")
+        final String function = request.getQueryParameters().get("function");
+        
+        /**
+         * Adds post to community feed.
+         * 
+         * URL Format: https://huskypackapi.azurewebsites.net/api/commmunity?function=add&id={id}&title={title}&content={content}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/community?function=add&id=0&title=Bear&content=soft_bear
+         */
+        if (function.equals("add")) {
+            final String id = request.getQueryParameters().get("id");
+            final String title = request.getQueryParameters().get("title");
+            final String content = request.getQueryParameters().get("content");
+            
+            for (User user : users) {
+                if (Integer.toString(user.id).equals(id)) {
+                    Post post = new Post(postCount, user, title, content);
+                    community.add(post);
+                    postCount += 1;
+                    return request.createResponseBuilder(HttpStatus.OK).body("Post sent to community: \n" + post.toString()).build();
+                }
+            }
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Post format incorrect").build();
+
+        /**
+         * Removes post in community feed.
+         * 
+         * URL Format: https://huskypackapi.azurewebsites.net/api/community?function=remove&key={postKey}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/community?function=remove&key=0
+         */
+        } else if (function.equals("remove")) {
+            final String key = request.getQueryParameters().get("key");
+            for (Post post : community) {
+                if (Integer.toString(post.key).equals(key)) {
+                    community.remove(post);
+                    return request.createResponseBuilder(HttpStatus.OK).body("Post removed with key: " + key).build();
+                }
+            }
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Post does not exist").build();
+
+        /**
+         * Lists post in community feed.
+         * 
+         * URL Format: https://huskypackapi.azurewebsites.net/api/community?function=list
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/commnunity?function=list
+         */
+        } else if (function.equals("list")) {
+            String lst = "";
+            for (Post post : community) {
+                lst += post.toString() + "\n";
+            }
+            if (lst.equals("")) {
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Error building community feed or feed empty").build();
+            }
+            return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
+        } else {
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Task function does not exist").build();
+        }
+    }
 
     // @FunctionName("Payment") Cybersource Visa
 
