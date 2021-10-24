@@ -17,13 +17,12 @@ public class User {
     }
 
     public String toString() {
-        StringBuilder profile = new StringBuilder("{\n"
+        String profile = "{\n"
             + "   id: " + id + "\n"
             + "   firstName: " + firstName + "\n"
             + "   lastName: " + lastName + "\n"
             + "   email: " + email + "\n"
-            + "}"
-        );
-        return profile.toString();
+            + "}";
+        return profile;
     }
 }
