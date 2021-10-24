@@ -7,6 +7,8 @@ public class User {
     public String status;
     public String email;
     public String password;
+    public String major;
+    public String interest;
 
     public User(int id, String firstName, String lastName, String email, String password) {
         this.id = id;

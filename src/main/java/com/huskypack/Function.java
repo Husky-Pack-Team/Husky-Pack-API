@@ -132,7 +132,7 @@ public class Function {
             for (User user : users) {
                 if (Integer.toString(user.id).equals(id)) {
                     users.remove(user);
-                    return request.createResponseBuilder(HttpStatus.OK).body("User successfully removed | id: " + id).build();
+                    return request.createResponseBuilder(HttpStatus.OK).body("User successfully removed with id: " + id).build();
                 }
             }
 
@@ -201,6 +201,10 @@ public class Function {
                                 user.email = queryMap.get("email");
                             } else if (query.equals("password")) {
                                 user.password = queryMap.get("password");
+                            } else if (query.equals("major")) {
+                                user.major = queryMap.get("major");
+                            } else if (query.equals("interest")) {
+                                user.interest = queryMap.get("interest");
                             } else {
                                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect parameter passed").build();
                             }
@@ -228,7 +232,7 @@ public class Function {
                 lst += user.toString() + "\n";
             }
             if (lst.equals("")) {
-                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Error building user list").build();
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("No users in user system").build();
             }
             return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
         
@@ -291,16 +295,11 @@ public class Function {
             final String description = request.getQueryParameters().get("description");
             final String cost = request.getQueryParameters().get("cost");
             
-            for (User user : users) {
-                if (Integer.toString(user.id).equals(id)) {
-                    Task task = new Task(taskCount, user, title, description, Integer.parseInt(cost));
-                    tasks.add(task);
-                    taskCount += 1;
-                    return request.createResponseBuilder(HttpStatus.OK).body("Task successfully added: \n" + task.toString()).build();
-                }
-            }
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Task failed to be added").build();
-            
+            Task task = new Task(taskCount, Integer.parseInt(id), title, description, Integer.parseInt(cost));
+            tasks.add(task);
+            taskCount += 1;
+            return request.createResponseBuilder(HttpStatus.OK).body("Task successfully added: \n" + task.toString()).build();
+
         /**
          * Remove task from task system.
          * 
@@ -314,7 +313,7 @@ public class Function {
             for (Task task : tasks) {
                 if (Integer.toString(task.code).equals(code)) {
                     tasks.remove(task);
-                    return request.createResponseBuilder(HttpStatus.OK).body("Task successfully removed | code: " + code).build();
+                    return request.createResponseBuilder(HttpStatus.OK).body("Task successfully remove with code: " + code).build();
                 }
             }
 
@@ -370,7 +369,7 @@ public class Function {
                 lst += task.toString() + "\n";
             }
             if (lst.equals("")) {
-                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Error building task list").build();
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Tasks empty").build();
             }
             return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
 
@@ -420,15 +419,10 @@ public class Function {
             final String title = request.getQueryParameters().get("title");
             final String content = request.getQueryParameters().get("content");
             
-            for (User user : users) {
-                if (Integer.toString(user.id).equals(id)) {
-                    Post post = new Post(postCount, user, title, content);
-                    community.add(post);
-                    postCount += 1;
-                    return request.createResponseBuilder(HttpStatus.OK).body("Post sent to community: \n" + post.toString()).build();
-                }
-            }
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Post format incorrect").build();
+            Post post = new Post(postCount, Integer.parseInt(id), title, content);
+            community.add(post);
+            postCount += 1;
+            return request.createResponseBuilder(HttpStatus.OK).body("Post sent to community: \n" + post.toString()).build();
 
         /**
          * Removes post in community feed.
@@ -460,7 +454,7 @@ public class Function {
                 lst += post.toString() + "\n";
             }
             if (lst.equals("")) {
-                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Error building community feed or feed empty").build();
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Feed empty").build();
             }
             return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
         } else {
@@ -469,6 +463,4 @@ public class Function {
     }
 
     // @FunctionName("Payment") Cybersource Visa
-
-    // @FunctionName("Chat")
 }
