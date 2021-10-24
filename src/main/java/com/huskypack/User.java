@@ -17,12 +17,12 @@ public class User {
     }
 
     public String toString() {
-        String profile = "{\n"
+        String user = "{\n"
             + "   id: " + id + "\n"
             + "   firstName: " + firstName + "\n"
             + "   lastName: " + lastName + "\n"
             + "   email: " + email + "\n"
             + "}";
-        return profile;
+        return user;
     }
 }
