@@ -24,6 +24,8 @@ public class User {
             + "   firstName: " + firstName + "\n"
             + "   lastName: " + lastName + "\n"
             + "   email: " + email + "\n"
+            + "   major: " + major + "\n"
+            + "   interest: " + interest + "\n"
             + "}";
         return user;
     }

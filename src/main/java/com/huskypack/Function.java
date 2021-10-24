@@ -205,8 +205,6 @@ public class Function {
                                 user.major = queryMap.get("major");
                             } else if (query.equals("interest")) {
                                 user.interest = queryMap.get("interest");
-                            } else {
-                                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect parameter passed").build();
                             }
                         }
                     }
@@ -215,7 +213,7 @@ public class Function {
             if (match != null) {
                 return request.createResponseBuilder(HttpStatus.OK).body("User configuration successful: \n" + match.toString()).build();
             } else {
-                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User does not exist").build();
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User does not exist or incorrect parameters").build();
             }
             
 
@@ -227,11 +225,12 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "";
+            String lst = "[";
             for (User user : users) {
                 lst += user.toString() + "\n";
             }
-            if (lst.equals("")) {
+            lst += "]";
+            if (lst.equals("[]")) {
                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("No users in user system").build();
             }
             return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
@@ -364,11 +363,12 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "";
+            String lst = "[";
             for (Task task : tasks) {
                 lst += task.toString() + "\n";
             }
-            if (lst.equals("")) {
+            lst += "]";
+            if (lst.equals("[]")) {
                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Tasks empty").build();
             }
             return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
@@ -391,6 +391,33 @@ public class Function {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Task function does not exist").build();
         }
     }
+
+    /**
+     * Provides functions to match users with a task based on there interest.
+     */
+    @FunctionName("match")
+    public HttpResponseMessage match(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.GET, HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext context) {
+        context.getLogger().info("Java HTTP processed request to match user with task.");
+
+        final String id = request.getQueryParameters().get("id");
+        for (User user : users) {
+            if (Integer.toString(user.id).equals(id)) {
+                for (Task task : tasks) {
+                    if (task.title.equals(user.interest)) {
+                        return request.createResponseBuilder(HttpStatus.OK).body("Task matched based on interest: \n" + task.toString()).build();
+                    }
+                }
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("No task matched based on interests").build();
+            }
+        }
+        return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect request parameters").build();
+        }
 
     /**
      * Provides functions to manage integrated user system.
@@ -449,11 +476,12 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/commnunity?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "";
+            String lst = "[";
             for (Post post : community) {
                 lst += post.toString() + "\n";
             }
-            if (lst.equals("")) {
+            lst += "]";
+            if (lst.equals("[]")) {
                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Feed empty").build();
             }
             return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
