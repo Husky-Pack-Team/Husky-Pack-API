@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class Function {
     private Set<User> users = new HashSet<>();
+    private int userCount;
 
     // /**
     //  * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
@@ -63,7 +64,8 @@ public class Function {
         final String lastName = request.getQueryParameters().get("last-name");
         final String email = request.getQueryParameters().get("email");
         final String password = request.getQueryParameters().get("password");
-        int id = users.size();
+        int id = userCount;
+        userCount += 1;
         
         for (User user : users) {
             if (user.email.equals(email)) {
@@ -120,7 +122,7 @@ public class Function {
                 authLevel = AuthorizationLevel.ANONYMOUS)
                 HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
-        context.getLogger().info("Java HTTP processed user removal request.");
+        context.getLogger().info("Java HTTP processed user authentication request.");
 
         final String email = request.getQueryParameters().get("email");
         final String password = request.getQueryParameters().get("password");
@@ -133,7 +135,6 @@ public class Function {
 
         return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect credentials").build();
     }
-    
 
     /**
      * Gives user information in user system.
@@ -149,7 +150,7 @@ public class Function {
                 authLevel = AuthorizationLevel.ANONYMOUS)
                 HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
-        context.getLogger().info("Java HTTP processed user list request.");
+        context.getLogger().info("Java HTTP processed user information request.");
         
         final String id = request.getQueryParameters().get("id");
 
@@ -159,6 +160,42 @@ public class Function {
             }
         }
         return request.createResponseBuilder(HttpStatus.OK).body("User does not exist").build();
+    }
+
+    // @FunctionName("UserParse")
+    // public HttpResponseMessage userParse
+
+    /**
+     * Configures user attributes in user system.
+     * @return HTTP request status and associated results.
+     * 
+     * Test URL: https://huskypackapi.azurewebsites.net/api/UserConfigure?id=0&verify=1
+     */
+    @FunctionName("UserConfigure")
+    public HttpResponseMessage userConfigure(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.GET, HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext context) {
+        context.getLogger().info("Java HTTP processed user configuration request.");
+
+
+        
+    // TODO
+
+
+        final String email = request.getQueryParameters().get("email");
+        final String password = request.getQueryParameters().get("password");
+
+        for (User user : users) {
+            if (user.email.equals(email) && user.password.equals(password)) {
+                return request.createResponseBuilder(HttpStatus.OK).body("User successfully authentically | user:\n" + user.toString()).build();
+            }
+        }
+
+        return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect credentials").build();
     }
 
     /**
@@ -187,4 +224,22 @@ public class Function {
         }
         return request.createResponseBuilder(HttpStatus.OK).body(lst).build();
     }
+
+    // @FunctionName("TaskAdd")
+    // @FunctionName("TaskRemove")
+    // @FunctionName("TaskInfo")
+    // @FunctionName("TaskConfigure")
+    // @FunctionName("TaskList")
+    // @FunctionName("Task")
+
+    // @FunctionName("Payment") Cybersource Visa
+    
+    // @FunctionName("CleanUsers")
+    // @FunctionName("CleanTasks")
+    
+    // @FunctionName("Chat")
+
+    // @FunctionName("CommunityPostAdd")
+    // @FunctionName("CommunityPostRemove")
+    // @FunctionName("CommunityPostList")
 }
