@@ -88,9 +88,9 @@ public class Function {
         /**
          * Adds user to user system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=add&first-name={first}&last-name={last}&email={correctEmail}&password={password}
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=add&first-name={first}&last-name={last}&email={correctEmail}&password={password}
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=add&first-name=Husky&last-name=Junior&email=hj@uw.edu&password=superhusky
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=add&first-name=Husky&last-name=Junior&email=hj@uw.edu&password=superhusky
          */
         if (function.equals("add")) {
             final String firstName = request.getQueryParameters().get("first-name");
@@ -112,9 +112,9 @@ public class Function {
         /**
          * Removes user from user system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=remove&id={userID}
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=remove&id={userID}
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=remove&id=0
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=remove&id=0
          */
         } else if (function.equals("remove")) {
             final String id = request.getQueryParameters().get("id");
@@ -130,9 +130,9 @@ public class Function {
         /**
          * Authenticates user in user system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=authenticate&email={email}&password={password}
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=authenticate&email={email}&password={password}
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=authenticate&email=hj@uw.edu&password=superhusky
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=authenticate&email=hj@uw.edu&password=superhusky
          */
         } else if (function.equals("authenticate")) {
             final String email = request.getQueryParameters().get("email");
@@ -149,9 +149,9 @@ public class Function {
         /**
          * Gives user information in user system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=info&id={userID}
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=info&id={userID}
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=info&id=0
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=info&id=0
          */
         } else if (function.equals("info")) {
             final String id = request.getQueryParameters().get("id");
@@ -169,7 +169,7 @@ public class Function {
          * Configures user attributes in user system.
          * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserConfigure?id=0&verify=1
+         * Test URL: https://huskypackapi.azurewebsites.net/api/userConfigure?id=0&verify=1
          */
         // } else if (function.equals("configure")) {
         //     // TODO: Add Parsing of Configure
@@ -188,9 +188,9 @@ public class Function {
         /**
          * Lists users in user system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=list
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=list
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=list
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=list
          */
         } else if (function.equals("list")) {
             String lst = "";
@@ -205,9 +205,9 @@ public class Function {
         /**
          * Removes all users in user system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/User?function=clean
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=clean
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/User?function=clean
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=clean
          */
         } else if (function.equals("clean")) {
             users.removeAll(users);
@@ -233,7 +233,7 @@ public class Function {
      *  - Clean
      * @return HTTP request status and associated results for given function.
      * 
-     * URL Format: https://huskypackapi.azurewebsites.net/api/user?function={function}
+     * URL Format: https://huskypackapi.azurewebsites.net/api/task?function={function}
      * Takes function name and associated query parameters.
      */
     @FunctionName("task")
@@ -250,9 +250,10 @@ public class Function {
 
         /**
          * Add task to task system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=add&title=Food&description=Bear_wants_food
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=add&id={userID}&title={title}&description={description}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=add&id=0&title=food&description=Bear_Wants_Salmon
          */
         if (function.equals("add")) {
             final String id = request.getQueryParameters().get("id");
@@ -271,9 +272,10 @@ public class Function {
             
         /**
          * Remove task from task system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserRemove?id=0
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=remove&id={userID}&title={title}&description={description}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=remove&id=0
          */
         } else if (function.equals("remove")) {
             final String code = request.getQueryParameters().get("code");
@@ -288,9 +290,10 @@ public class Function {
 
         /**
          * Gives task details from task system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserInfo?id=0
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=info&code={taskCode}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=info&code=0
          */
         } else if (function.equals("info")) {
             final String code = request.getQueryParameters().get("code");
@@ -305,9 +308,10 @@ public class Function {
 
         /**
          * Configures task status in task system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserConfigure?id=0&verify=1
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=status&code={taskCode}&satus={state}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=status&code=0&status=true
          */
         } else if (function.equals("status")) {
             final String code = request.getQueryParameters().get("code");
@@ -327,9 +331,10 @@ public class Function {
 
         /**
          * Lists tasks in task system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserList
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=list
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=list
          */
         } else if (function.equals("list")) {
             String lst = "";
@@ -343,9 +348,10 @@ public class Function {
 
         /**
          * Removes all tasks in task system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/UserList
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=clean
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=clean
          */
         } else if (function.equals("clean")) {
             tasks.removeAll(tasks);
@@ -359,10 +365,12 @@ public class Function {
         }
     }
 
+    // @FunctionName("Community")
+        // @FunctionName("CommunityPostAdd")
+        // @FunctionName("CommunityPostRemove")
+        // @FunctionName("CommunityPostList")
+
     // @FunctionName("Payment") Cybersource Visa
 
     // @FunctionName("Chat")
-    // @FunctionName("CommunityPostAdd")
-    // @FunctionName("CommunityPostRemove")
-    // @FunctionName("CommunityPostList")
 }
