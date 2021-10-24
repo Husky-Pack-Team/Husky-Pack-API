@@ -19,12 +19,12 @@ public class Task {
 
     public String toString() {
         String task = "{\n"
-            + "   code: " + code + "\n"
-            + "   User: " + id + "\n"
-            + "   title: " + title + "\n"
-            + "   description: " + description + "\n"
-            + "   cost: " + cost + "\n"
-            + "   status: " + status + "\n"
+            + "   \"code\": \"" + code + "\",\n"
+            + "   \"user\": \"" + id + "\",\n"
+            + "   \"title\": \"" + title + "\",\n"
+            + "   \"description\": \"" + description + "\",\n"
+            + "   \"cost\": \"" + cost + "\",\n"
+            + "   \"status\": \"" + status + "\",\n"
             + "}";
         return task;
     }

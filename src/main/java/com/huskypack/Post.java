@@ -15,10 +15,10 @@ public class Post {
 
     public String toString() {
         String post = "{\n"
-            + "   key: " + key + "\n"
-            + "   user: " + id + "\n"
-            + "   title: " + title + "\n"
-            + "   content: " + content + "\n"
+            + "   \"key\": \"" + key + "\",\n"
+            + "   \"user\": \"" + id + ",\n"
+            + "   \"title: \"" + title + "\",\n"
+            + "   \"content\": \"" + content + "\",\n"
             + "}";
         return post;
     }

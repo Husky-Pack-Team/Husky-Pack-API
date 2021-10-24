@@ -227,7 +227,7 @@ public class Function {
         } else if (function.equals("list")) {
             String lst = "[\n";
             for (User user : users) {
-                lst += user.toString() + "\n";
+                lst += user.toString() + ",\n";
             }
             lst += "]";
             if (lst.equals("[]")) {
@@ -363,9 +363,9 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "[\ n";
+            String lst = "[\n";
             for (Task task : tasks) {
-                lst += task.toString() + "\n";
+                lst += task.toString() + ",\n";
             }
             lst += "]";
             if (lst.equals("[]")) {
@@ -478,7 +478,7 @@ public class Function {
         } else if (function.equals("list")) {
             String lst = "[\n";
             for (Post post : community) {
-                lst += post.toString() + "\n";
+                lst += post.toString() + ",\n";
             }
             lst += "]";
             if (lst.equals("[]")) {

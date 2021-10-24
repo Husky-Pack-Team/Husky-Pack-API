@@ -20,12 +20,12 @@ public class User {
 
     public String toString() {
         String user = "{\n"
-            + "   id: " + id + "\n"
-            + "   firstName: " + firstName + "\n"
-            + "   lastName: " + lastName + "\n"
-            + "   email: " + email + "\n"
-            + "   major: " + major + "\n"
-            + "   interest: " + interest + "\n"
+            + "   \"id\": \"" + id + "\",\n"
+            + "   \"firstName\": \"" + firstName + "\",\n"
+            + "   \"lastName\": \"" + lastName + "\",\n"
+            + "   \"email\": \"" + email + "\",\n"
+            + "   \"major\": \"" + major + "\",\n"
+            + "   \"interest\": \"" + interest + "\",\n"
             + "}";
         return user;
     }
