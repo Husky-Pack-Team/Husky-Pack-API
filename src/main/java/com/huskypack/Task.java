@@ -5,14 +5,16 @@ public class Task {
     public final User user;
     public final String title;
     public final String description;
+    public final int cost;
     public Boolean status;
 
-    public Task(int code, User user, String title, String description) {
+    public Task(int code, User user, String title, String description, int cost) {
         this.code = code;
         this.user = user;
         this.title = title;
         this.description = description;
         this.status = false;
+        this.cost = cost;
     }
 
     public String toString() {

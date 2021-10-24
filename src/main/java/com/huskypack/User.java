@@ -4,7 +4,7 @@ public class User {
     public final int id;
     public String firstName;
     public String lastName;
-    public boolean verified;
+    public String status;
     public String email;
     public String password;
 

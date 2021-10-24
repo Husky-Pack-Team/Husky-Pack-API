@@ -127,6 +127,7 @@ public class Function {
             }
 
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User failed to be removed").build();
+            
         /**
          * Authenticates user in user system.
          * 
@@ -158,32 +159,51 @@ public class Function {
 
             for (User user : users) {
                 if (Integer.toString(user.id).equals(id)) {
-                    return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body(user.toString()).build();
+                    return request.createResponseBuilder(HttpStatus.OK).body(user.toString()).build();
                 }
             }
-            return request.createResponseBuilder(HttpStatus.OK).body("User does not exist").build();
-        // @FunctionName("UserParse")
-        // public HttpResponseMessage userParse
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User does not exist").build();
 
         /**
          * Configures user attributes in user system.
-         * @return HTTP request status and associated results.
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/userConfigure?id=0&verify=1
+         * URL Format: https://huskypackapi.azurewebsites.net/api/user?function=configure&id={userID}&{field}={fieldValue}
+         * 
+         * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=configure&id=0&verfied=true
          */
-        // } else if (function.equals("configure")) {
-        //     // TODO: Add Parsing of Configure
-
-        //     final String id = request.getQueryParameters().get("id");
-        //     final String field = request.getQueryParameters().get("field");
-        //     final String status = request.getQueryParameters().get("status");
-
-        //     for (User user : users) {
-        //         if (Integer.toString(user.id).equals(id)) {
-        //             ;
-        //         }
-        //     }
-        //     return request.createResponseBuilder(HttpStatus.OK).body("User does not exist").build();
+        } else if (function.equals("configure")) {
+            final String id = request.getQueryParameters().get("id");
+            final Map<String, String> queryMap = request.getQueryParameters();
+            
+            User match = null;
+            for (User user : users) {
+                if (Integer.toString(user.id).equals(id)) {
+                    match = user;
+                    for (String query : queryMap.keySet()) {
+                        if (!query.equals("function") && !query.equals("id")) {
+                            if (query.equals("first-name")) {
+                                user.firstName = queryMap.get("first_name");
+                            } else if (query.equals("last-name")) {
+                                user.lastName = queryMap.get("first_name");
+                            } else if (query.equals("status")) {
+                                user.status = queryMap.get("status");
+                            } else if (query.equals("email")) {
+                                user.status = queryMap.get("email");
+                            } else if (query.equals("password")) {
+                                user.status = queryMap.get("password");
+                            } else {
+                                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect parameter passed").build();
+                            }
+                        }
+                    }
+                }
+            }
+            if (match != null) {
+                return request.createResponseBuilder(HttpStatus.OK).body("User configuration successful: \n" + match.toString()).build();
+            } else {
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("User does not exist").build();
+            }
+            
 
         /**
          * Lists users in user system.
@@ -273,9 +293,9 @@ public class Function {
         /**
          * Remove task from task system.
          * 
-         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=remove&id={userID}&title={title}&description={description}
+         * URL Format: https://huskypackapi.azurewebsites.net/api/task?function=remove&code={codeID}
          * 
-         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=remove&id=0
+         * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=remove&code=0
          */
         } else if (function.equals("remove")) {
             final String code = request.getQueryParameters().get("code");
@@ -364,6 +384,20 @@ public class Function {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Task function does not exist").build();
         }
     }
+
+    /**
+     * Provides functions to manage integrated user system.
+     */
+    // @FunctionName("community")
+    // public HttpResponseMessage community(
+    //         @HttpTrigger(
+    //             name = "req",
+    //             methods = {HttpMethod.GET, HttpMethod.POST},
+    //             authLevel = AuthorizationLevel.ANONYMOUS)
+    //             HttpRequestMessage<Optional<String>> request,
+    //         final ExecutionContext context) {
+    //     context.getLogger().info("Java HTTP processed community function request.");
+    // }
 
     // @FunctionName("Community")
         // @FunctionName("CommunityPostAdd")
