@@ -225,7 +225,7 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/user?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "[";
+            String lst = "[\n";
             for (User user : users) {
                 lst += user.toString() + "\n";
             }
@@ -363,7 +363,7 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/task?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "[";
+            String lst = "[\ n";
             for (Task task : tasks) {
                 lst += task.toString() + "\n";
             }
@@ -476,7 +476,7 @@ public class Function {
          * Test URL: https://huskypackapi.azurewebsites.net/api/commnunity?function=list
          */
         } else if (function.equals("list")) {
-            String lst = "[";
+            String lst = "[\n";
             for (Post post : community) {
                 lst += post.toString() + "\n";
             }
