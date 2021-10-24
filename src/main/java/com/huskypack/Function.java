@@ -188,9 +188,9 @@ public class Function {
                             } else if (query.equals("status")) {
                                 user.status = queryMap.get("status");
                             } else if (query.equals("email")) {
-                                user.status = queryMap.get("email");
+                                user.email = queryMap.get("email");
                             } else if (query.equals("password")) {
-                                user.status = queryMap.get("password");
+                                user.password = queryMap.get("password");
                             } else {
                                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Incorrect parameter passed").build();
                             }
@@ -340,11 +340,7 @@ public class Function {
 
             for (Task task : tasks) {
                 if (Integer.toString(task.code).equals(code)) {
-                    if (status.equals("true")) {
-                        task.status = true;
-                    } else {
-                        task.status = false;
-                    }
+                    task.status = status;
                     return request.createResponseBuilder(HttpStatus.OK).body(task.toString()).build();
                 }
             }
